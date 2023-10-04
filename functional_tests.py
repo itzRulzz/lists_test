@@ -15,7 +15,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000')
 
         # Он видит, что в названии страницы и хэдере упомянуты To-do листы
-        self.assertIn('To-do', self.browser.title)
+        self.assertIn('To-Do', self.browser.title)
         self.fail('Finish the test!')
 
         # Коле предлагают с ходу написать задачу
