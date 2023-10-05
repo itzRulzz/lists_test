@@ -40,7 +40,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element('id', 'id_list_table')
         rows = table.find_elements('tag name', 'tr')
         self.assertTrue(
-            any(row.text == '1. Купить новую кастрюлю на улицу' for row in rows)
+            any(row.text == '1. Купить новую кастрюлю на улицу' for row in rows),
+            "New to-do item didn't appear in the table"
         )
 
         # Текст бокс с приглашением написать еще одну задачу не пропал
