@@ -11,6 +11,11 @@ class NewVisitorTest(unittest.TestCase):
         # Удовлетворенный, Коля уходит спать
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element('id', 'id_list_table')
+        rows = table.find_elements('tag name', 'tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Коля услышал о новом крутом приложении для отслеживания задач
         # Он переходит на главную страницу приложения
@@ -36,10 +41,7 @@ class NewVisitorTest(unittest.TestCase):
         # To-do листе есть его запись - 1. "Купить новую кастрюлю на улицу"
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
-
-        table = self.browser.find_element('id', 'id_list_table')
-        rows = table.find_elements('tag name', 'tr')
-        self.assertIn('1. Купить новую кастрюлю на улицу', [row.text for row in rows])
+        self.check_for_row_in_list_table('1. Купить новую кастрюлю на улицу')
 
         # Текст бокс с приглашением написать еще одну задачу не пропал
         # Коля вводит "Молиться Перуну чтобы пошел дождь" (Коля язычник)
@@ -49,11 +51,9 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         # Страница снова обновляется и теперь в списке есть две записи
-        table = self.browser.find_element('id', 'id_list_table')
-        rows = table.find_elements('tag name', 'tr')
-        self.assertIn('1. Купить новую кастрюлю на улицу', [row.text for row in rows])
-        self.assertIn('2. Молиться Перуну чтобы пошел дождь', [row.text for row in rows])
-
+        self.check_for_row_in_list_table('1. Купить новую кастрюлю на улицу')
+        self.check_for_row_in_list_table('2. Молиться Перуну чтобы пошел дождь')
+        
         # Коля гадает, запомнит ли сайт его список
         # Он замечает, что сайт сгенерировал для него уникальный URL
         # (Тут есть поясняющий текст на этот счет)
