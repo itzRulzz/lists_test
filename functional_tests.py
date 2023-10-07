@@ -39,20 +39,25 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element('id', 'id_list_table')
         rows = table.find_elements('tag name', 'tr')
-        self.assertTrue(
-            any(row.text == '1. Купить новую кастрюлю на улицу' for row in rows),
-            "New to-do item didn't appear in the table"
-        )
+        self.assertIn('1. Купить новую кастрюлю на улицу', [row.text for row in rows])
 
         # Текст бокс с приглашением написать еще одну задачу не пропал
         # Коля вводит "Молиться Перуну чтобы пошел дождь" (Коля язычник)
-        self.fail('Finish the test!')
+        inputbox = self.browser.find_element('id', 'id_new_item')
+        inputbox.send_keys('Молиться Перуну чтобы пошел дождь')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
 
         # Страница снова обновляется и теперь в списке есть две записи
+        table = self.browser.find_element('id', 'id_list_table')
+        rows = table.find_elements('tag name', 'tr')
+        self.assertIn('1. Купить новую кастрюлю на улицу', [row.text for row in rows])
+        self.assertIn('2. Молиться Перуну чтобы пошел дождь', [row.text for row in rows])
 
         # Коля гадает, запомнит ли сайт его список
         # Он замечает, что сайт сгенерировал для него уникальный URL
         # (Тут есть поясняющий текст на этот счет)
+        self.fail('Finish the test!')
 
         # Он переходит по этой ссылке - его список еще здесь
 if __name__ == '__main__':
