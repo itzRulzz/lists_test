@@ -1,9 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from django.test import LiveServerTestCase
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
     
@@ -19,7 +19,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Коля услышал о новом крутом приложении для отслеживания задач
         # Он переходит на главную страницу приложения
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # Он видит, что в названии страницы и хэдере упомянуты To-do листы
         self.assertIn('To-Do', self.browser.title)
@@ -44,7 +44,7 @@ class NewVisitorTest(unittest.TestCase):
         self.check_for_row_in_list_table('1. Купить новую кастрюлю на улицу')
 
         # Текст бокс с приглашением написать еще одну задачу не пропал
-        # Коля вводит "Молиться Перуну чтобы пошел дождь" (Коля язычник)
+        # Коля вводит "Молиться Перуну чтобы пошел дождь" (Коля практикует язычество)
         inputbox = self.browser.find_element('id', 'id_new_item')
         inputbox.send_keys('Молиться Перуну чтобы пошел дождь')
         inputbox.send_keys(Keys.ENTER)
@@ -60,5 +60,3 @@ class NewVisitorTest(unittest.TestCase):
         self.fail('Finish the test!')
 
         # Он переходит по этой ссылке - его список еще здесь
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
